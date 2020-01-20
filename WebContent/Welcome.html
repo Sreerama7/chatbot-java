@@ -1,0 +1,180 @@
+<html>
+<head>
+<style>
+body, html {
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.bg-img {
+  /* The image used */
+  background-image: url("message.png");
+   position:float;
+  height: 100%;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+/* Add styles to the form container */
+.container {
+  position: absolute;
+  right: 900px;
+  top:0px;
+  margin: 40px;
+  max-width: 600px;
+  padding: 16px;
+  background-color: yellow;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Set a style for the submit button */
+.btn {
+  background-color: #3150CB;
+  color: white;
+  padding: 16px 20px;
+  border: none;
+  cursor: pointer;
+  width: 50%;
+  opacity: 0.9;
+}
+
+.btn:hover {
+  opacity: 1;
+}
+.left
+{
+text-align: left;
+}
+.right
+{
+text-align: right;
+}
+.right1
+{
+text-align: right;
+}
+.left1
+{
+text-align: right;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+function history()
+{
+	
+	 $.ajax({
+		   url:'history',
+		   type:'GET',
+		   success : function(response){
+		   
+		    var a=response.answer;
+		    var array=a.split("#")
+
+		    var i,i1;
+		    for(i=0,i1=1;i<array.length-1;i1+=2,i+=2)
+		    	{
+		    var para = document.createElement("p");
+		    var node = document.createTextNode(array[i]);
+		    para.className='right';
+		    para.appendChild(node);
+		    var element = document.getElementById("his");
+		    element.appendChild(para);
+		    
+		    var para1 = document.createElement("p");
+		    var node1 = document.createTextNode(array[i1]);
+		    para1.className='left';
+		    para1.appendChild(node1);
+		  
+		    element.appendChild(para1);
+		    	}
+		  
+		   }
+		   });
+}
+	function func()
+	{
+		
+	   
+	   var text=document.getElementById("text").value;  
+	   var json=
+	   {
+	   "text":text,     
+	   };
+	   
+	   var myVar=JSON.stringify(json);
+	   $.ajax({
+	   url:'chat',
+	   type:'POST',
+	   dataType: 'json',
+	   data:myVar,
+	   success : function(response){
+	       var object=response.answer;
+	     //  alert(object);
+		   var para = document.createElement("p");
+		    var node = document.createTextNode("YOU:"+text);
+		    para.className='right';
+		    para.appendChild(node);
+		    var element = document.getElementById("ok");
+		    element.appendChild(para);
+		    
+		    var para1 = document.createElement("p");
+		    var node1 = document.createTextNode("ALEX:"+object);
+		    para1.className='left';
+		    para1.appendChild(node1);
+		  
+		    element.appendChild(para1);
+	 // document.getElementById("result").innerHTML +="YOU:"+text+"<br />"+"<br />" ;
+	  //document.getElementById("result1").innerHTML +="ALEX:"+response+"<br />"+"<br />" ;
+	  document.getElementById("text").value=""
+	   },
+	   error:function(data,status,er) {
+		  
+		   window.location ="Html.html";
+		  }
+	   });
+	}	
+</script>
+</head>
+<body onload="history()" class="bg-img">
+<div >
+<form action=test method=post class="container">  
+ <h1 align="center">WELCOME TO ALEX</h1>
+ <div id="his">
+ </div>
+ <div id="ok">
+
+ <p align="right" id="result" ></p>
+ <p align="left" id="result1" ></p>
+  </div>
+ <p align="center">ENTER MESSAGE</h2>
+     
+	<input type="text" name="text" id="text">
+	
+	<input type="button" onclick="func()" class="btn" value="Send">
+	
+</body>
+
+</html>
